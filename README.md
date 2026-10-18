@@ -15,8 +15,9 @@ be plugged in after the container starts.
 
 Public source: <https://github.com/ddoma76/ScreenContainer-release>.
 Published releases use `ghcr.io/ddoma76/screencontainer`. On a Linux server with
-Docker Engine and the Compose plugin, download `compose.ghcr.yaml` and `.env`
-from the same release into an empty directory. Review `.env` before starting:
+Docker Engine and the Compose plugin, download `compose.ghcr.yaml` and `default.env`
+from the same release into an empty directory. Rename `default.env` to `.env`
+after verifying the downloaded checksums. Review `.env` before starting:
 set `DATA_DIR` to persistent storage, `PUID`/`PGID` to its owner, and check
 `KMS_DEVICE`, keyboard layout and timezone.
 

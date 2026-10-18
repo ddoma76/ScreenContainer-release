@@ -50,7 +50,8 @@ licenses and notices under `/usr/share/doc/`.
 The matching GitHub release provides:
 
 - Clean project source (`screencontainer-0.1.0-source.tar.gz`).
-- Pull-only Compose configuration and generic `.env`.
+- Pull-only Compose configuration and generic `default.env` (rename to `.env`
+  after checksum verification).
 - Binary and source package version manifests.
 - Matching Debian source packages, including Debian patches/build instructions,
   in a split tar stream (`debian-sources.tar.part-*`).
