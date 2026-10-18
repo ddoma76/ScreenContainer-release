@@ -54,8 +54,9 @@ publishing. For a temporary publishing session, use a private temporary
    PulseAudio, persistent home data and clean stop/restart. Bluetooth needs host
    kernel support and must be reported as untested if that support is absent.
    Do not run two physical-display containers against the same GPU/VT.
-4. Package the sources in numbered tar archives smaller than GitHub's per-asset
-   limit, keeping each Debian source package's `.dsc` and referenced files.
+4. Package the sources as a tar stream split into numbered parts smaller than
+   GitHub's per-asset limit. Recipients concatenate the parts before extraction,
+   preserving each Debian source package's `.dsc` and referenced files.
    Include a binary/source version manifest and SHA-256 checksums. Upload them
    with the original project source to the GitHub release before publication of
    the binary image. Link that release from the package description.
