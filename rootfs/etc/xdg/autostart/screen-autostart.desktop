@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Screen container autostart
+Exec=/usr/local/bin/screen-autostart
+NoDisplay=true
+X-XFCE-Autostart-Override=true

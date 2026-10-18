@@ -1,0 +1,30 @@
+name: screen
+
+services:
+  screen:
+    image: ghcr.io/ddoma76/screencontainer:${SCREEN_VERSION:-0.1.0}
+    container_name: screen
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    shm_size: "1gb"
+    stop_grace_period: 20s
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-UTC}
+      VT: ${VT:-7}
+      KMS_DEVICE: ${KMS_DEVICE:-/dev/dri/card0}
+      XKB_LAYOUT: ${XKB_LAYOUT:-us}
+      XKB_VARIANT: ${XKB_VARIANT:-}
+      XKB_OPTIONS: ${XKB_OPTIONS:-}
+      SCREEN_BLANK_MINUTES: ${SCREEN_BLANK_MINUTES:-0}
+      ENABLE_SUDO: ${ENABLE_SUDO:-false}
+      AUTOSTART: ${AUTOSTART:-}
+    volumes:
+      - /dev/dri:/dev/dri
+      - /dev/input:/dev/input
+      - /dev/snd:/dev/snd
+      - /run/udev:/run/udev:ro
+      - ${DATA_DIR:-./data}/home:/home/screen
+      - ${DATA_DIR:-./data}/x11:/tmp/.X11-unix

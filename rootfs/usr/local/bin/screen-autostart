@@ -1,0 +1,11 @@
+#!/bin/bash
+# Runs inside the XFCE session at login.
+# Publishes the session bus address so `screen-run` can join it, then runs $AUTOSTART if set.
+echo "$DBUS_SESSION_BUS_ADDRESS" > "$XDG_RUNTIME_DIR/dbus-address"
+
+pulseaudio --check 2>/dev/null || pulseaudio --start --exit-idle-time=-1
+
+if [ -n "${AUTOSTART:-}" ]; then
+    sleep 2
+    exec bash -c "$AUTOSTART"
+fi

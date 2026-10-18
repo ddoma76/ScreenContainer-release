@@ -1,0 +1,6 @@
+// The container desktop has no logind-managed active session.
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.blueman.") === 0 && subject.isInGroup("bluetooth")) {
+        return polkit.Result.YES;
+    }
+});

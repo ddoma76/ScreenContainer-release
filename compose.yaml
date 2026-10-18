@@ -1,0 +1,36 @@
+name: screen
+
+services:
+  screen:
+    build: .
+    image: screen-desktop:latest
+    container_name: screen
+    restart: unless-stopped
+    # Xorg needs direct access to the GPU (KMS), virtual terminals and input devices.
+    privileged: true
+    # Host networking: browser sees the LAN like the NAS does, and host processes /
+    # host-network containers can reach the X server via its abstract socket (DISPLAY=:0).
+    network_mode: host
+    shm_size: "1gb"
+    stop_grace_period: 20s
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      TZ: ${TZ:-UTC}
+      VT: ${VT:-7}
+      KMS_DEVICE: ${KMS_DEVICE:-/dev/dri/card0}
+      XKB_LAYOUT: ${XKB_LAYOUT:-us}
+      XKB_VARIANT: ${XKB_VARIANT:-}
+      XKB_OPTIONS: ${XKB_OPTIONS:-}
+      SCREEN_BLANK_MINUTES: ${SCREEN_BLANK_MINUTES:-0}
+      ENABLE_SUDO: ${ENABLE_SUDO:-false}
+      AUTOSTART: ${AUTOSTART:-}
+    volumes:
+      # Bind-mount device dirs so devices plugged in after start (keyboard, mouse, monitor) appear.
+      - /dev/dri:/dev/dri
+      - /dev/input:/dev/input
+      - /dev/snd:/dev/snd
+      - /run/udev:/run/udev:ro
+      - ${DATA_DIR:-./data}/home:/home/screen
+      # Shared X11 socket directory: mount it in other containers as /tmp/.X11-unix and set DISPLAY=:0
+      - ${DATA_DIR:-./data}/x11:/tmp/.X11-unix

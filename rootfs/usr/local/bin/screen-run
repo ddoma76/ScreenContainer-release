@@ -1,0 +1,23 @@
+#!/bin/bash
+# Launch a program on the screen as the desktop user, detached from the caller.
+#   docker exec screen screen-run firefox-esr https://example.com
+if [ $# -eq 0 ]; then
+    echo "usage: screen-run <command> [args...]" >&2
+    exit 2
+fi
+
+USER_NAME=${USER_NAME:-screen}
+uid=$(id -u "$USER_NAME")
+runtime="/run/user/$uid"
+bus=""
+[ -r "$runtime/dbus-address" ] && bus=$(cat "$runtime/dbus-address")
+
+cmd=(env DISPLAY="${DISPLAY:-:0}" XDG_RUNTIME_DIR="$runtime" HOME="/home/$USER_NAME"
+     USER="$USER_NAME" LOGNAME="$USER_NAME" DBUS_SESSION_BUS_ADDRESS="$bus" "$@")
+
+if [ "$(id -u)" = 0 ]; then
+    setsid runuser -u "$USER_NAME" -- "${cmd[@]}" >/dev/null 2>&1 < /dev/null &
+else
+    setsid "${cmd[@]}" >/dev/null 2>&1 < /dev/null &
+fi
+echo "started: $*"

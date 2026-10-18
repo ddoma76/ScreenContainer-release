@@ -1,0 +1,10 @@
+# Example: show another container's GUI on the screen.
+#   sudo docker compose -f examples/client-app.yaml up -d
+services:
+  xeyes:
+    image: debian:bookworm-slim
+    command: sh -c "apt-get update && apt-get install -y --no-install-recommends x11-apps && exec xeyes"
+    environment:
+      DISPLAY: ":0"
+    volumes:
+      - ../data/x11:/tmp/.X11-unix
